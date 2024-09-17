@@ -3,6 +3,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import {registerUser} from '../../utils/api'
 
 function Signup() {
   const [firstname, setFirstname] = useState('');
@@ -40,9 +41,8 @@ function Signup() {
     formData.append('profilePic', profilefordb);
 
     try {
-      const response = await axios.post('http://localhost:3006/api/user/register', formData);
+      const response = await registerUser(formData);
       console.log(response.data);
-
       toast.success('Sign up successful!');
       navigate('/login');
     } catch (error) {

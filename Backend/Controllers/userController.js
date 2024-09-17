@@ -48,11 +48,6 @@ export const registerUser = async (req, res)  => {
 export const loginUser = async (req, res)  => {
     console.log('we get Your req and processing it ')
     const { email, password } = req.body;
-
-
-    console.log('email and password ',email)
-    console.log('email and password ',password)
-
     try {
         const checkUser = await userModel.findOne({ email: email }).exec();
 
@@ -65,7 +60,8 @@ export const loginUser = async (req, res)  => {
         const jwtToken=generateToken();
         console.log(generateToken());
         res.status(200).json({
-            userName: checkUser.username,
+            firstname: checkUser.firstname,
+            lastname: checkUser.lastname,
             userEmail: checkUser.email,
             profileUrl: checkUser.profilePic,
             jwtToken:jwtToken

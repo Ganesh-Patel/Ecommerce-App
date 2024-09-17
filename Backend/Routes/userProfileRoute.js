@@ -14,6 +14,8 @@ const router = express.Router();
 router.post('/user/register', uploadPicsCloud.single('profilePic'), registerUser);
 // Route for getting a user
 router.post('/user/login', loginUser);
+router.post('/user/updateuser', uploadPicsCloud.single('profilePic'), registerUser);
+router.delete('/user/deleteuser',registerUser);
 
 
 export default router;

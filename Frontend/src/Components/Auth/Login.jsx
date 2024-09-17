@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import {UserContext } from '../Context/UserContext.jsx'
+import {loginUser} from '../../utils/api.js'
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -17,11 +18,9 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`http://localhost:3006/api/user/login`,{
-        email,
-        password
-      });
 
+      //live api url https://ecommerce-app-oqjy.onrender.com  
+      const response = await loginUser({email,password});
       const user = response.data;
       console.log('user',user)
       if (user) {

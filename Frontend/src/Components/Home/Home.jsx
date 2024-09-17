@@ -38,7 +38,7 @@ function Home() {
     navigate('/login');
   };
 
-  
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -62,7 +62,7 @@ function Home() {
           <div className="hidden md:flex space-x-8">
             <Link to="/home" className="hover:underline">Home</Link>
             <Link to="/about" className="hover:underline">About</Link>
-            <Link to="/projects" className="hover:underline">Projects</Link>
+            <Link to="/userAccount" className="hover:underline">Account</Link>
           </div>
 
           {/* Right side with user profile and logout */}
@@ -99,7 +99,7 @@ function Home() {
             <div className="flex flex-col items-center space-y-4 py-4">
               <Link to="/home" className="hover:underline" onClick={toggleMenu}>Home</Link>
               <Link to="/about" className="hover:underline" onClick={toggleMenu}>About</Link>
-              <Link to="/projects" className="hover:underline" onClick={toggleMenu}>Projects</Link>
+              <Link to="/userAccount" className="hover:underline" onClick={toggleMenu}>Account</Link>
               {user && (
                 <div className="flex flex-col items-center">
                   <img
