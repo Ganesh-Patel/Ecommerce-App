@@ -1,35 +1,31 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-// Define the User schema
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
+const userSchema = new mongoose.Schema(
+  {
+    profilePic: {
+        type: String 
+      },
+    firstname: {
+      type: String,
+      requred: true,
+    },
+    lastname: {
+      type: String,
+      requred: true,
+    },
+    email: {
+      type: String,
+      requred: true,
+    },
+    password: {
+      type: String,
+      requred: true,
+    },
+    role: {
+      type: String,
+      requred: true,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-  },
-  profilePic: {
-    type: String,
-    default: 'default.jpg', 
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
-const UserModel = mongoose.model('User', userSchema);
-
-export default UserModel;
+  { timestamps: true }
+);
+export const userModel = mongoose.model("user", userSchema);

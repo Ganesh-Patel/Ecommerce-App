@@ -5,9 +5,11 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Signup() {
-  const [UserName, setUserName] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('user'); // Default role as 'user'
   const [profilefordb, setProfilefordb] = useState('');
   const [profilePic, setProfilePic] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -30,20 +32,19 @@ function Signup() {
     setLoading(true);
 
     const formData = new FormData();
-    formData.append('username', UserName);
-
+    formData.append('firstname', firstname);
+    formData.append('lastname', lastname);
     formData.append('email', email);
-
     formData.append('password', password);
-
+    formData.append('role', role);
     formData.append('profilePic', profilefordb);
 
     try {
-      const response = await axios.post('https://multer-transfer-files.onrender.com/signup', formData);
+      const response = await axios.post('http://localhost:3006/api/user/register', formData);
       console.log(response.data);
 
       toast.success('Sign up successful!');
-      navigate('/login')
+      navigate('/login');
     } catch (error) {
       toast.error('Failed to sign up. Please try again.');
     }
@@ -53,7 +54,7 @@ function Signup() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <ToastContainer /> {/* Add the ToastContainer to show notifications */}
+      <ToastContainer />
       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
         <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
         <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
@@ -67,18 +68,29 @@ function Signup() {
             )}
             <input
               type="file"
-              name='profilePic'
+              name="profilePic"
               onChange={handleImageUpload}
               className="mb-4"
             />
           </div>
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">Name</label>
+            <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">First Name</label>
             <input
               type="text"
-              id="username"
-              value={UserName}
-              onChange={(e) => setUserName(e.target.value)}
+              id="firstname"
+              value={firstname}
+              onChange={(e) => setFirstname(e.target.value)}
+              required
+              className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">Last Name</label>
+            <input
+              type="text"
+              id="lastname"
+              value={lastname}
+              onChange={(e) => setLastname(e.target.value)}
               required
               className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
             />
@@ -91,7 +103,7 @@ function Signup() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+              className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
             />
           </div>
           <div>
@@ -102,8 +114,21 @@ function Signup() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+              className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
             />
+          </div>
+          <div>
+            <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
+            <select
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              required
+              className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+            >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
           </div>
           <button
             type="submit"
@@ -114,7 +139,7 @@ function Signup() {
           </button>
         </form>
         <p className="mt-4 text-center text-gray-600">
-          Already have an account?<Link to="/login" className="text-teal-500 hover:underline">Login</Link>
+          Already have an account? <Link to="/login" className="text-teal-500 hover:underline">Login</Link>
         </p>
       </div>
     </div>

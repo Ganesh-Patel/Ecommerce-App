@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import CryptoJS from 'crypto-js';
+import { toast } from 'react-toastify';
 
-const secretKey = 'mySecretKey'; // Use a more secure key in production
+const secretKey = 'mySecretKey';
 
 function Home() {
   const { user, setUser,authToken,setauthToken } = useContext(UserContext); 
@@ -30,12 +31,14 @@ function Home() {
   }, [setUser]);
 
   const handleLogout = () => {
-    localStorage.removeItem('user'); // Clear stored data on logout
-    setUser(null); // Clear user context
+    localStorage.removeItem('user'); 
+    setUser(null); 
     setauthToken(false);
+    toast('Logeed  out successfully');
     navigate('/login');
   };
 
+  
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -48,7 +51,7 @@ function Home() {
           {/* Left side with logo and app name */}
           <div className="flex items-center">
             <img
-              src="https://images-platform.99static.com//0yUT_MVpTXsuJPraCs5FZcW3NWg=/209x0:1291x1082/fit-in/500x500/99designs-contests-attachments/87/87865/attachment_87865022"
+              src="https://e7.pngegg.com/pngimages/480/581/png-clipart-logo-e-commerce-digital-marketing-brand-trade-ecommerce-text-service.png"
               alt="App Logo"
               className="h-10 w-10 mr-2"
             />
@@ -100,7 +103,7 @@ function Home() {
               {user && (
                 <div className="flex flex-col items-center">
                   <img
-                    src={user.profilePicture || 'https://via.placeholder.com/40'}
+                    src={user.profileUrl || 'https://via.placeholder.com/40'}
                     alt="User Profile"
                     className="h-10 w-10 rounded-full"
                   />
