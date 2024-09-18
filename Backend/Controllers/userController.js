@@ -6,7 +6,6 @@ import sendEmail from '../Services/sendEmail.js'
 import uploadToCloudinary from '../Services/uploadToCloudinary.js'
 import { generateToken } from "../Services/tokenGenerate.js";
 
-
 // Signup route
 export const registerUser = async (req, res)  => {
     try {
@@ -57,19 +56,47 @@ export const loginUser = async (req, res)  => {
         const check = bcrypt.compare(password, checkUser.password);
         if (!check) res.status(404).json({ error: "Invalid Credentials" });
 
-        const jwtToken=generateToken();
-        console.log(generateToken());
-        res.status(200).json({
+        const jwtToken=generateToken(checkUser);
+
+        res
+        .cookie("auth_token", jwtToken, {
+          httpOnly: true,
+          secure: false, //as we are working with localhost, which runs on http, not on https
+          sameSite: "none",
+          maxAge: 3600000,
+        })
+        .status(200)
+        .json({
+          message: "Login Successful",
             firstname: checkUser.firstname,
             lastname: checkUser.lastname,
             userEmail: checkUser.email,
             profileUrl: checkUser.profilePic,
-            jwtToken:jwtToken
         });
+        // res.status(200).json({
+        //     firstname: checkUser.firstname,
+        //     lastname: checkUser.lastname,
+        //     userEmail: checkUser.email,
+        //     profileUrl: checkUser.profilePic,
+        //     jwtToken:jwtToken
+        // });
     } catch (error) {
         // Handle any errors
         console.error(error);
         res.status(500).json({ message: 'An error occurred' });
     }
 };
+
+export const logOutUser=async ()=>{
+    try {
+        res.clearCookie("auth_token", {
+          httpOnly: true,
+          secure: false,
+          sameSite: "none",
+        });
+        res.status(200).json({ message: "Logout successfully" });
+      } catch (err) {
+        res.status(500).json({ error: err });
+    }
+}
 
