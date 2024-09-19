@@ -1,12 +1,13 @@
 import axios from 'axios';
 
 // const API_URL = 'https://ecommerce-app-oqjy.onrender.com/api/';
-const API_URL = 'http://localhost:3006/api/';
+const API_URL = 'http://localhost:3008/api/';
 
 export const registerUser = async (user) => {
   try {
     const response = await axios.post(`${API_URL}/user/register`, user);
     console.log('User Register successfully:', { user, response: response.data });
+ 
     return response.data;
   } catch (error) {
     console.error('Error in Register user:', { user, error: error.message });
@@ -15,7 +16,9 @@ export const registerUser = async (user) => {
 };
 export const loginUser = async (user) => {
   try {
-    const response = await axios.post(`${API_URL}user/login`,user);
+    const response = await axios.post(`${API_URL}user/login`,user,{
+      withCredentials: true});
+      console.log('Cookies from browser:', document.cookie);
     console.log('user Logged in Successfully:', { response: response});
     return response;
   } catch (error) {
@@ -42,6 +45,18 @@ export const deleteUser= async (id) => {
     return response.data;
   } catch (error) {
     console.error(`Error deleting task ${id}:`, { error: error.message });
+    throw error;
+  }
+};
+export const logoutUser= async (id) => {
+  try {
+    const response = await axios.delete(`${API_URL}user/logoutuser`, { }, {
+      withCredentials: true,
+    });
+    console.log(`logged out successfully:`, { response: response.data });
+    return response.data;
+  } catch (error) {
+    console.error(`Error in logging out ${id}:`, { error: error.message });
     throw error;
   }
 };

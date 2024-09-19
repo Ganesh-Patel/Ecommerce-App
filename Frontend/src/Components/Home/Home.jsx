@@ -4,6 +4,7 @@ import { UserContext } from '../Context/UserContext';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import CryptoJS from 'crypto-js';
 import { toast } from 'react-toastify';
+import {logoutUser} from '../../utils/api';
 
 const secretKey = 'mySecretKey';
 
@@ -31,9 +32,7 @@ function Home() {
   }, [setUser]);
 
   const handleLogout = () => {
-    localStorage.removeItem('user'); 
-    setUser(null); 
-    setauthToken(false);
+    logoutUser();
     toast('Logeed  out successfully');
     navigate('/login');
   };

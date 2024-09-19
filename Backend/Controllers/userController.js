@@ -54,9 +54,10 @@ export const loginUser = async (req, res)  => {
             return res.status(404).json({ message: 'User not found or invalid credentials' });
         }
         const check = bcrypt.compare(password, checkUser.password);
-        if (!check) res.status(404).json({ error: "Invalid Credentials" });
+        if (!check) return res.status(404).json({ error: "Invalid Credentials" });
 
         const jwtToken=generateToken(checkUser);
+        console.log(generateToken(checkUser))
 
         res
         .cookie("auth_token", jwtToken, {
@@ -87,13 +88,9 @@ export const loginUser = async (req, res)  => {
     }
 };
 
-export const logOutUser=async ()=>{
+export const logOutUser=async (req,res)=>{
     try {
-        res.clearCookie("auth_token", {
-          httpOnly: true,
-          secure: false,
-          sameSite: "none",
-        });
+        res.clearCookie("auth_token");
         res.status(200).json({ message: "Logout successfully" });
       } catch (err) {
         res.status(500).json({ error: err });
