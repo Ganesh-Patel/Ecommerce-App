@@ -64,7 +64,7 @@ export const loginUser = async (req, res)  => {
         .cookie("auth_token", jwtToken, {
           httpOnly: true,
           secure: false, //as we are working with localhost, which runs on http, not on https
-          sameSite: "lax",
+          sameSite: "strict",
           maxAge: 3600000,
         })
         .status(200)
@@ -84,13 +84,7 @@ export const loginUser = async (req, res)  => {
 export const logOutUser=async (req,res)=>{
     console.log("now you are going to logged out")
     try {
-        res.clearCookie("auth_token", {
-            httpOnly: true,
-            secure: false, // Same as when you set it during login
-            sameSite: "none", // Match the sameSite attribute if you used it
-            path: "/",       // Ensure you use the correct path
-          });
-        res.status(200).json({ message: "Logout successfully" });
+        res.clearCookie("auth_token").status(200).json({ message: "Logout successfully" });
       } catch (err) {
         res.status(500).json({ error: err });
     }

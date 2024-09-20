@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const API_URL = 'https://ecommerce-app-oqjy.onrender.com/api/';
-const API_URL = 'http://localhost:3006/api/';
+const API_URL = 'http://localhost:3008/api/';
 
 export const registerUser = async (user) => {
   try {
@@ -49,7 +49,7 @@ export const deleteUser= async (id) => {
 };
 export const logoutUser= async (setIsLoggedIn) => {
   try {
-    const response = await axios.post(`${API_URL}user/logoutuser`,{
+    const response = await axios.post(`${API_URL}user/logoutuser`,{},{
       withCredentials: true,
     });
     console.log(`logged out successfully:`, { response: response.data });
