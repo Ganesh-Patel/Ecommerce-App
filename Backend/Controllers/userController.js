@@ -49,6 +49,7 @@ export const loginUser = async (req, res)  => {
     const { email, password } = req.body;
     try {
         const checkUser = await userModel.findOne({ email: email }).exec();
+        console.log(checkUser)
 
         if (!checkUser) {
             return res.status(404).json({ message: 'User not found or invalid credentials' });
@@ -63,7 +64,7 @@ export const loginUser = async (req, res)  => {
         .cookie("auth_token", jwtToken, {
           httpOnly: true,
           secure: false, //as we are working with localhost, which runs on http, not on https
-          sameSite: "none",
+          sameSite: "lax",
           maxAge: 3600000,
         })
         .status(200)
@@ -74,26 +75,40 @@ export const loginUser = async (req, res)  => {
             userEmail: checkUser.email,
             profileUrl: checkUser.profilePic,
         });
-        // res.status(200).json({
-        //     firstname: checkUser.firstname,
-        //     lastname: checkUser.lastname,
-        //     userEmail: checkUser.email,
-        //     profileUrl: checkUser.profilePic,
-        //     jwtToken:jwtToken
-        // });
     } catch (error) {
-        // Handle any errors
         console.error(error);
         res.status(500).json({ message: 'An error occurred' });
     }
 };
 
 export const logOutUser=async (req,res)=>{
+    console.log("now you are going to logged out")
     try {
-        res.clearCookie("auth_token");
+        res.clearCookie("auth_token", {
+            httpOnly: true,
+            secure: false, // Same as when you set it during login
+            sameSite: "none", // Match the sameSite attribute if you used it
+            path: "/",       // Ensure you use the correct path
+          });
         res.status(200).json({ message: "Logout successfully" });
       } catch (err) {
         res.status(500).json({ error: err });
     }
 }
 
+export function isUserLoggedIn(req, res) {
+    res.json({ user: req.user });
+  }
+
+
+
+export const fetchUsers=async (req,res)=>{
+    console.log("you are fetching all the users ")
+    try {
+        const allUsers = await userModel.find();
+        console.log(allUsers)
+        res.status(200).json({ message: "users fetched successfully" ,allUsers});
+      } catch (err) {
+        res.status(500).json({ error: err });
+    }
+}

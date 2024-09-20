@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const API_URL = 'https://ecommerce-app-oqjy.onrender.com/api/';
-const API_URL = 'http://localhost:3008/api/';
+const API_URL = 'http://localhost:3006/api/';
 
 export const registerUser = async (user) => {
   try {
@@ -18,7 +18,6 @@ export const loginUser = async (user) => {
   try {
     const response = await axios.post(`${API_URL}user/login`,user,{
       withCredentials: true});
-      console.log('Cookies from browser:', document.cookie);
     console.log('user Logged in Successfully:', { response: response});
     return response;
   } catch (error) {
@@ -48,15 +47,44 @@ export const deleteUser= async (id) => {
     throw error;
   }
 };
-export const logoutUser= async (id) => {
+export const logoutUser= async (setIsLoggedIn) => {
   try {
-    const response = await axios.delete(`${API_URL}user/logoutuser`, { }, {
+    const response = await axios.post(`${API_URL}user/logoutuser`,{
       withCredentials: true,
     });
     console.log(`logged out successfully:`, { response: response.data });
+    setIsLoggedIn(false);
     return response.data;
   } catch (error) {
-    console.error(`Error in logging out ${id}:`, { error: error.message });
+    console.error(`Error in logging out:`, { error: error.message });
     throw error;
+  }
+};
+
+export const isUserLoggedIn= async (setIsLoggedIn) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}user/loggedIn`,
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.statusText === "OK") setIsLoggedIn(true);
+  } catch (err) {
+    console.log("Error checking login status: " + err.message);
+  }
+};
+
+export const fetchUsers= async ( )=> {
+  try {
+    const response = await axios.get(
+      `${API_URL}user/fetchusers`,
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.statusText === "OK") return response;
+  } catch (err) {
+    console.log("Error in fetching users : " + err.message);
   }
 };

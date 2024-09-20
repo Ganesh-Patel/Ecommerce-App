@@ -1,7 +1,7 @@
 import express from 'express';
-import {registerUser,loginUser, logOutUser} from '../Controllers/userController.js';
+import {registerUser,loginUser, logOutUser,isUserLoggedIn,fetchUsers} from '../Controllers/userController.js';
+import  authMiddleware  from '../Middleware/authMiddleware.js';
 import multer from 'multer';
-
 
 
 // Multer setup to process files in memory only
@@ -14,9 +14,11 @@ const router = express.Router();
 router.post('/user/register', uploadPicsCloud.single('profilePic'), registerUser);
 // Route for getting a user
 router.post('/user/login', loginUser);
-router.delete('/user/logoutuser',logOutUser);
+router.get("/user/loggedIn", authMiddleware, isUserLoggedIn);
+router.post('/user/logoutuser',logOutUser);
 router.post('/user/updateuser', uploadPicsCloud.single('profilePic'), registerUser);
 router.delete('/user/deleteuser',registerUser);
+router.get('/user/fetchusers',fetchUsers)
 
 
 export default router;

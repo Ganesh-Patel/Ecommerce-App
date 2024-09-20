@@ -6,7 +6,7 @@ import dotenv from 'dotenv/config';
 import cookieParser from "cookie-parser";
 
 const corsOptions = {
-    origin: 'http://localhost:5174',  // Your frontend origin
+    origin: 'http://localhost:5173',  // Your frontend origin
     credentials: true, // This allows the server to accept cookies
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"], // Allowed methods
     

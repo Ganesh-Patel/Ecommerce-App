@@ -1,25 +1,73 @@
-import React,{useContext} from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Home from './Components/Home/Home.jsx';
 import Login from './Components/Auth/Login.jsx';
 import SignUp from './Components/Auth/SignUp.jsx';
-import { UserContext } from './Components/Context/UserContext.jsx'
+import { UserContext } from './Components/Context/UserContext.jsx';
 import ProtectedRoute from './Components/Route/ProtectedRoute.jsx'; 
-import UserAccount from './Components/Pages/UserAccount/UserAccount.jsx'
-
+import UserAccount from './Components/Pages/UserAccount/UserAccount.jsx';
+import AdminDashboard from './Components/Admin/AdminDashboard.jsx';
+import Header from './Components/Header/Header';
+import Footer from './Components/Footer/Footer';
+import ManageUsers from './Components/ManageUsers/ManageUsers.jsx';
 
 function App() {
-  const { authToken } = useContext(UserContext); 
+  const { isLoggedIn } = useContext(UserContext);
+  const location = useLocation(); 
+
+  // Pages that should NOT have the Header and Footer
+  const noHeaderFooterRoutes = ['/login', '/', '/signup'];
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/" element={<SignUp />} />
-      <Route path="/signup" element={<SignUp />} />
-       <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-       <Route path="/userAccount" element={<ProtectedRoute element={<UserAccount />} />} />
-      </Routes>
-    </ div>
+      {/* Conditionally render Header and Footer if the route is not in noHeaderFooterRoutes */}
+      {!noHeaderFooterRoutes.includes(location.pathname) && <Header />}
+      <div className="flex-grow">
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
+
+          {/* Protected Routes - only accessible if logged in */}
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/userAccount"
+            element={
+              <ProtectedRoute>
+                <UserAccount />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/adminpanel"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+        <Route
+            path="/users"
+            element={
+              <ProtectedRoute>
+                <ManageUsers />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
+
+      {/* Conditionally render Footer */}
+      {!noHeaderFooterRoutes.includes(location.pathname) && <Footer />}
+    </div>
   );
 }
 

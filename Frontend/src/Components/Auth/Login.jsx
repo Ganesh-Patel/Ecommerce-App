@@ -1,33 +1,37 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
-import {UserContext } from '../Context/UserContext.jsx'
-import {loginUser} from '../../utils/api.js'
+import { UserContext } from '../Context/UserContext.jsx';
+import { loginUser } from '../../utils/api.js';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const {setUser,setauthToken} = useContext(UserContext);
+  const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const navigate = useNavigate();
 
+  // If the user is already logged in, navigate to the home page
+  useEffect(() => {
+    console.log(isLoggedIn)
+    if (isLoggedIn) {
+      navigate('/home');
+    }
+  }, [isLoggedIn, navigate]);
+  // Handle login form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-
-      //live api url https://ecommerce-app-oqjy.onrender.com  
-      const response = await loginUser({email,password});
+      const response = await loginUser({ email, password });
       const user = response.data;
-      console.log('user',user)
       if (user) {
         setUser(user);
-        setauthToken(true);
+        setIsLoggedIn(true);
         toast.success('Login successful!');
-        navigate('/home'); 
+        navigate('/home'); // Redirect to home after login
       } else {
         toast.error('Invalid email or password.');
       }
@@ -35,9 +39,12 @@ function Login() {
       toast.error('Failed to login. Please try again.');
       console.error('Login error:', error);
     }
+
     setLoading(false);
   };
 
+  // If the user is logged in, this effect will navigate them to the home page,
+  // so we don't need to render the login form.
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
