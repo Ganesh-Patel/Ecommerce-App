@@ -54,7 +54,8 @@ export const loginUser = async (req, res)  => {
         if (!checkUser) {
             return res.status(404).json({ message: 'User not found or invalid credentials' });
         }
-        const check = bcrypt.compare(password, checkUser.password);
+        const check = await bcrypt.compare(password, checkUser.password);
+        console.log(check);
         if (!check) return res.status(404).json({ error: "Invalid Credentials" });
 
         const jwtToken=generateToken(checkUser);
@@ -90,6 +91,93 @@ export const logOutUser=async (req,res)=>{
     }
 }
 
+export const verifyemail=async (req,res)=>{
+    console.log("now you are going to verify your email")
+    const {email}=req.body
+    console.log(email)
+    try {
+        const checkUser = await userModel.findOne({ email: email }).exec();
+        if(!checkUser){
+            return res.status(404).json({ message: 'User not found for the given Email' });
+        }
+        res.status(200).json({ message: "user found successfully" });
+      } catch (err) {
+        res.status(404).json({ message: "user not found or invalid credentials" });
+    }
+}
+function generateOtp() {
+    return Math.floor(100000 + Math.random() * 900000); // Generates a number between 100000 and 999999
+}
+export const sendOtp = async (req, res) => {
+    const { email } = req.body;
+    console.log(email)
+  console.log('now you are going to send otp')
+    try {
+      const user = await userModel.findOne({ email }).exec();
+      console.log(user)
+      if (!user) {
+        return res.status(404).json({ message: 'User not found with the given email.' });
+      }
+      const otp = generateOtp(); 
+      const otpExpiry = Date.now() + 5 * 60 * 1000; 
+      user.otp = otp;
+      user.otpExpiry = otpExpiry;
+      await user.save(); 
+      const { firstname, lastname } = user;
+      await sendEmail(email, firstname, lastname, otp);   
+      // Step 6: Respond with success message
+      return res.status(200).json({ message: 'OTP sent successfully to your email address.' });
+      
+    } catch (err) {
+      console.error('Error in sendOtp:', err);
+      // Step 7: Handle any errors and respond with appropriate error message
+      return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
+    }
+  };
+  export const validateOtp=async (req,res)=>{
+    const {email,otp}=req.body;
+    console.log(email,otp)
+    try {
+        const user = await userModel.findOne({ email }).exec();
+        if (!user) {
+          return res.status(404).json({ message: 'User not found with the given email.' });
+        }
+        if (user.otp !== otp) {
+          return res.status(401).json({ message: 'Invalid OTP. Please try again.' });
+        }
+        if (user.otpExpiry < Date.now()) {
+          return res.status(401).json({ message: 'OTP has expired. Please try again.' });
+        }
+        user.otp = null;
+        user.otpExpiry = null;
+        await user.save();
+        return res.status(200).json({ message: 'OTP verified successfully.' });
+      } catch (err) {
+        console.error('Error in validateOtp:', err);
+        return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
+      }
+
+  }
+  export const changePassword=async (req,res)=>{
+    const {email,newPassword,confirmPassword}=req.body
+    console.log(email,newPassword,confirmPassword)
+    try {
+        const user = await userModel.findOne({ email }).exec();
+        if (!user) {
+          return res.status(404).json({ message: 'User not found with the given email.' });
+        }
+        if (newPassword !== confirmPassword) {
+          return res.status(400).json({ message: 'Passwords do not match.' });
+        }
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+        return res.status(200).json({ message: 'Password changed successfully.' });
+      } catch (err) {
+        console.error('Error in changePassword:', err);
+        return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
+      }
+  }
 export function isUserLoggedIn(req, res) {
     res.json({ user: req.user });
   }

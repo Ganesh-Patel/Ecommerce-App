@@ -10,13 +10,14 @@ import AdminDashboard from './Components/Admin/AdminDashboard.jsx';
 import Header from './Components/Header/Header';
 import Footer from './Components/Footer/Footer';
 import ManageUsers from './Components/ManageUsers/ManageUsers.jsx';
+import ForgetPassword from './Components/Auth/ForgetPassword.jsx';
 
 function App() {
   const { isLoggedIn } = useContext(UserContext);
   const location = useLocation(); 
 
   // Pages that should NOT have the Header and Footer
-  const noHeaderFooterRoutes = ['/login', '/', '/signup'];
+  const noHeaderFooterRoutes = ['/login', '/', '/signup', '/forgotpassword'];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -27,6 +28,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<SignUp />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgotpassword" element={<ForgetPassword />} />
 
           {/* Protected Routes - only accessible if logged in */}
           <Route

@@ -1,5 +1,5 @@
 import express from 'express';
-import {registerUser,loginUser, logOutUser,isUserLoggedIn,fetchUsers} from '../Controllers/userController.js';
+import {registerUser,loginUser, logOutUser,verifyemail,sendOtp,isUserLoggedIn,fetchUsers,validateOtp,changePassword} from '../Controllers/userController.js';
 import  authMiddleware  from '../Middleware/authMiddleware.js';
 import multer from 'multer';
 
@@ -16,6 +16,10 @@ router.post('/user/register', uploadPicsCloud.single('profilePic'), registerUser
 router.post('/user/login', loginUser);
 router.get("/user/loggedIn", authMiddleware, isUserLoggedIn);
 router.post('/user/logoutuser',logOutUser);
+router.post('/user/forgotpassword/verifyemail',verifyemail);
+router.post('/user/forgotpassword/sendotp',sendOtp);
+router.post('/user/forgotpassword/validateotp',validateOtp);
+router.post('/user/forgotpassword/changepassword',changePassword);
 router.post('/user/updateuser', uploadPicsCloud.single('profilePic'), registerUser);
 router.delete('/user/deleteuser',registerUser);
 router.get('/user/fetchusers',fetchUsers)

@@ -60,7 +60,46 @@ export const logoutUser= async (setIsLoggedIn) => {
     throw error;
   }
 };
-
+export const verifyemail= async (email) => {
+  try {
+    const response = await axios.post(`${API_URL}user/forgotpassword/verifyemail`,{email},{
+      withCredentials: true,
+    });
+    return response;
+  }catch (error) {
+   return error.message;
+  }
+};
+export const sendOtp= async (email) => {
+  try {
+    const response = await axios.post(`${API_URL}user/forgotpassword/sendotp`,{email},{
+      withCredentials: true,
+    });
+    return response;
+  }catch (error) {
+   return error.message;
+  }
+}
+export const validateOtp= async (email,otp) => {
+  try {
+    const response = await axios.post(`${API_URL}user/forgotpassword/validateotp`,{email,otp},{
+      withCredentials: true,
+    });
+    return response;
+  }catch (error) {
+   return error.message;
+  }
+}
+export const changePassword= async (email,newPassword,confirmPassword) => {
+  try {
+    const response = await axios.post(`${API_URL}user/forgotpassword/changepassword`,{email,newPassword,confirmPassword},{
+      withCredentials: true,
+    });
+    return response;
+  }catch (error) {
+   return error.message;
+  }
+}
 export const isUserLoggedIn= async (setIsLoggedIn) => {
   try {
     const response = await axios.get(
