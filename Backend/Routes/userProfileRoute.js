@@ -1,5 +1,5 @@
 import express from 'express';
-import {registerUser,loginUser, logOutUser,verifyemail,sendOtp,isUserLoggedIn,fetchUsers,validateOtp,changePassword} from '../Controllers/userController.js';
+import {registerUser,verifyUser,loginUser, logOutUser,verifyemail,sendOtp,isUserLoggedIn,fetchUsers,validateOtp,changePassword} from '../Controllers/userController.js';
 import  authMiddleware  from '../Middleware/authMiddleware.js';
 import multer from 'multer';
 
@@ -12,6 +12,7 @@ const router = express.Router();
 
 // Route for signing up a user
 router.post('/user/register', uploadPicsCloud.single('profilePic'), registerUser);
+router.get('/user/verifyuser',verifyUser);
 // Route for getting a user
 router.post('/user/login', loginUser);
 router.get("/user/loggedIn", authMiddleware, isUserLoggedIn);

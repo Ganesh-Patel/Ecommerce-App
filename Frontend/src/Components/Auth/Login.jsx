@@ -1,54 +1,60 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../Context/UserContext.jsx';
 import { loginUser } from '../../utils/api.js';
+import { toast } from 'react-toastify';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const [message, setMessage] = useState('');
+  const { setUser, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const navigate = useNavigate();
 
   // If the user is already logged in, navigate to the home page
   useEffect(() => {
-    console.log(isLoggedIn)
     if (isLoggedIn) {
       navigate('/home');
     }
   }, [isLoggedIn, navigate]);
+
   // Handle login form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    setMessage(''); 
+  
     try {
-      const response = await loginUser({ email, password });
-      const user = response.data;
-      if (user) {
+      const res = await loginUser({ email, password });
+      const response = res.data;
+  
+      console.log(response); 
+  
+      if (res.status === 200) {
+        const user = response; 
         setUser(user);
         setIsLoggedIn(true);
-        toast.success('Login successful!');
-        navigate('/home'); // Redirect to home after login
+        setMessage({ text: response.message, type: 'success' });
+        navigate('/home'); 
       } else {
-        toast.error('Invalid email or password.');
+        setMessage({ text: response.message || response.error, type: 'error' });
       }
     } catch (error) {
-      toast.error('Failed to login. Please try again.');
+      const errorMessage = error.response?.data?.error || 'An unexpected error occurred. Please try again.';
+      setMessage({ text: errorMessage, type: 'error' });
       console.error('Login error:', error);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
+  
 
-  // If the user is logged in, this effect will navigate them to the home page,
-  // so we don't need to render the login form.
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+
         <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
@@ -86,8 +92,16 @@ function Login() {
           Don't have an account? <Link to="/signup" className="text-teal-500 hover:underline">Sign Up</Link>
         </p>
         <p className="mt-4 text-center text-gray-600">
-           <Link to="/forgotpassword" className="text-teal-500 hover:underline">Forgot Password</Link>
+          <Link to="/forgotpassword" className="text-teal-500 hover:underline">Forgot Password</Link>
         </p>
+
+        {/* Message Display */}
+        {message && (
+          <div className={`mb-4 p-2 text-center rounded-md ${message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+            {message.text}
+          </div>
+        )}
+
       </div>
     </div>
   );

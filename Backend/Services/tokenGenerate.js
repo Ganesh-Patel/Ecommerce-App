@@ -7,7 +7,7 @@ export function generateToken(user) {
     {
       userID: user._id,
       userEmail: user.email,
-      isVerified: true,
+       isVerified: user.isVerified
     },
     process.env.SECRET,
     { expiresIn: "1h" }
