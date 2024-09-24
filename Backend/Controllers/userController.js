@@ -117,6 +117,7 @@ export const logOutUser = async (req, res) => {
   }
 }
 
+
 export const verifyemail = async (req, res) => {
   console.log("now you are going to verify your email")
   const { email } = req.body

@@ -14,10 +14,26 @@ function Login() {
 
   // If the user is already logged in, navigate to the home page
   useEffect(() => {
+    const checkAuthToken = () => {
+        const cookies = document.cookie.split(';');
+        const authToken = cookies.find(cookie => cookie.trim().startsWith('auth_token'));
+        console.log(authToken);
+
+        if (authToken) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
+    };
+
+    checkAuthToken();
     if (isLoggedIn) {
-      navigate('/home');
+        navigate('/home'); 
+    } else {
+        navigate('/login'); 
     }
-  }, [isLoggedIn, navigate]);
+}, [isLoggedIn, navigate]);
+
 
   // Handle login form submission
   const handleSubmit = async (e) => {
@@ -49,7 +65,6 @@ function Login() {
     }
   };
   
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">

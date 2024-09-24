@@ -8,13 +8,31 @@ import {logoutUser} from '../../utils/api';
 
 function Home({setIsLoggedIn,isLoggedIn}) {
 
+
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const handleLogout = () => {
-    logoutUser(setIsLoggedIn);
-    toast('Logeed  out successfully');
-    navigate('/login');
-  };
+  
+
+  useEffect(() => {
+    const checkAuthToken = () => {
+        const cookies = document.cookie.split(';');
+        const authToken = cookies.find(cookie => cookie.trim().startsWith('auth_token='));
+
+        if (authToken) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
+    };
+
+    checkAuthToken();
+    if (isLoggedIn) {
+        navigate('/home'); 
+    } else {
+        navigate('/login'); 
+    }
+}, [isLoggedIn, navigate]);
+ 
 
 
   const toggleMenu = () => {
