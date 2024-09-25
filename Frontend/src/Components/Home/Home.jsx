@@ -25,6 +25,7 @@ function Home({setIsLoggedIn,isLoggedIn}) {
         }
     };
 
+    
     checkAuthToken();
     if (isLoggedIn) {
         navigate('/home'); 
