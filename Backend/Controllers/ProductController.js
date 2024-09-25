@@ -1,0 +1,122 @@
+import {productModel } from "../Models/ProductModel.js"
+
+
+export const addProduct=async(req,res)=>{
+    
+    try {
+        const {
+            name,
+            brand,
+            category,
+            images,
+            rating,
+            price,
+            description,
+            inStock,
+            inventory,
+            addedBy
+        } = req.body;
+
+        if (!name || !brand || !category || !price || !inventory || !addedBy) {
+            return res.status(400).json({ message: "Please provide all required fields." });
+        }
+        const newProduct = new productModel({
+            name,
+            brand,
+            category,
+            images: images || [],
+            rating: rating || 0,  
+            price,
+            description,
+            inStock,
+            inventory,
+            addedBy
+        });
+
+        // Save the product to the database
+        const savedProduct = await newProduct.save();
+
+        // Respond with the created product
+        return res.status(201).json({
+            message: "Product added successfully",
+            product: savedProduct
+        });
+    } catch (error) {
+        console.error("Error adding product:", error);
+        return res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
+
+export const getAllProducts = async (req, res) => {
+    try {
+        const products = await productModel.find();
+        return res.status(200).json({
+            message: "Products retrieved successfully",
+            products: products
+        });
+    } catch (error) {
+        console.error("Error retrieving products:", error);
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+export const getSingleProducts= async(req,res)=>{
+    try {
+        const idToFind = req.params.id;   
+        const singleProduct = await productModel.findById(idToFind);
+
+        if (!singleProduct) {
+            return res.status(404).json({ message: "Product not found." });
+        }
+
+        return res.status(200).json({
+            message: "Product retrieved successfully",
+            product: singleProduct
+        });
+    } catch (error) {
+        console.error("Error retrieving product:", error);
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+export const deleteSingleProduct= async(req,res)=>{
+    try {
+        const idToDelete = req.params.id;   
+        const singleProduct = await productModel.findByIdAndDelete(idToDelete);
+
+        if (!singleProduct) {
+            return res.status(404).json({ message: "Product not found." });
+        }
+
+        return res.status(200).json({
+            message: "Product deleted successfully",
+            product: singleProduct
+        });
+    } catch (error) {
+        console.error("Error deleting product:", error);
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
+export const updateProduct = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const updatedFields = req.body; 
+        console.log(updatedFields);
+        const updatedProduct = await productModel.findByIdAndUpdate(
+            productId,
+            { $set: updatedFields }, 
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+        return res.status(200).json({
+            message: "Product updated successfully",
+            product: updatedProduct
+        });
+    } catch (error) {
+        console.error("Error updating product:", error);
+        return res.status(500).json({ message: "Server error", error: error.message });
+    }
+};

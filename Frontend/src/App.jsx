@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Home from './Components/Home/Home.jsx';
 import Login from './Components/Auth/Login.jsx';
@@ -16,7 +16,6 @@ import VerifyEmail from './Components/Auth/VerifyEmail.jsx';
 function App() {
   const { isLoggedIn } = useContext(UserContext);
   const location = useLocation(); 
-
   // Pages that should NOT have the Header and Footer
   const noHeaderFooterRoutes = ['/login', '/', '/signup', '/forgotpassword','/verifyemail','/VerifyEmail'];
 
@@ -74,5 +73,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

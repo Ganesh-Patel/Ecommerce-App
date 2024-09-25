@@ -11,36 +11,11 @@ function Login() {
   const [message, setMessage] = useState('');
   const { setUser, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const navigate = useNavigate();
-
-  // If the user is already logged in, navigate to the home page
-  useEffect(() => {
-    const checkAuthToken = () => {
-        const cookies = document.cookie.split(';');
-        const authToken = cookies.find(cookie => cookie.trim().startsWith('auth_token'));
-        console.log(authToken);
-
-        if (authToken) {
-            setIsLoggedIn(true);
-        } else {
-            setIsLoggedIn(false);
-        }
-    };
-
-    checkAuthToken();
-    if (isLoggedIn) {
-        navigate('/home'); 
-    } else {
-        navigate('/login'); 
-    }
-}, [isLoggedIn, navigate]);
-
-
   // Handle login form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage(''); 
-  
     try {
       const res = await loginUser({ email, password });
       const response = res.data;

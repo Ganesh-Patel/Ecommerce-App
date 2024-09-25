@@ -205,11 +205,11 @@ export const changePassword = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
   }
 }
-export function isUserLoggedIn(req, res) {
+
+export function isUserLoggedIn(req, res) 
+{
   res.json({ user: req.user });
 }
-
-
 
 export const fetchUsers = async (req, res) => {
   console.log("you are fetching all the users ")

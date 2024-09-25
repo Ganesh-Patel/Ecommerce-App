@@ -3,27 +3,26 @@ import {registerUser,verifyUser,loginUser, logOutUser,verifyemail,sendOtp,isUser
 import  authMiddleware  from '../Middleware/authMiddleware.js';
 import multer from 'multer';
 
-
 // Multer setup to process files in memory only
 const storage = multer.memoryStorage(); 
 const uploadPicsCloud = multer({ storage });
 
-const router = express.Router();
+const UserRouter = express.Router();
 
 // Route for signing up a user
-router.post('/user/register', uploadPicsCloud.single('profilePic'), registerUser);
-router.get('/user/verifyuser',verifyUser);
+UserRouter.post('/register', uploadPicsCloud.single('profilePic'), registerUser);
+UserRouter.get('/verifyuser',verifyUser);
 // Route for getting a user
-router.post('/user/login', loginUser);
-router.get("/user/loggedIn", authMiddleware, isUserLoggedIn);
-router.post('/user/logoutuser',logOutUser);
-router.post('/user/forgotpassword/verifyemail',verifyemail);
-router.post('/user/forgotpassword/sendotp',sendOtp);
-router.post('/user/forgotpassword/validateotp',validateOtp);
-router.post('/user/forgotpassword/changepassword',changePassword);
-router.post('/user/updateuser', uploadPicsCloud.single('profilePic'), registerUser);
-router.delete('/user/deleteuser',registerUser);
-router.get('/user/fetchusers',fetchUsers)
+UserRouter.post('/login', loginUser);
+UserRouter.get("/loggedIn", authMiddleware, isUserLoggedIn);
+UserRouter.post('/logoutuser',logOutUser);
+UserRouter.post('/forgotpassword/verifyemail',verifyemail);
+UserRouter.post('/forgotpassword/sendotp',sendOtp);
+UserRouter.post('/forgotpassword/validateotp',validateOtp);
+UserRouter.post('/forgotpassword/changepassword',changePassword);
+UserRouter.post('/updateuser', uploadPicsCloud.single('profilePic'), registerUser);
+UserRouter.delete('/deleteuser',registerUser);
+UserRouter.get('/fetchusers',fetchUsers)
 
 
-export default router;
+export default UserRouter;

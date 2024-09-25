@@ -101,7 +101,8 @@ export const changePassword= async (email,newPassword,confirmPassword) => {
    return error.message;
   }
 }
-export const isUserLoggedIn= async (setIsLoggedIn) => {
+
+export const isUserLoggedIn= async (setIsLoggedIn,setUser) => {
   try {
     const response = await axios.get(
       `${API_URL}user/loggedIn`,
@@ -109,7 +110,15 @@ export const isUserLoggedIn= async (setIsLoggedIn) => {
         withCredentials: true,
       }
     );
-    if (response.statusText === "OK") setIsLoggedIn(true);
+    console.log('response from api check',response)
+    console.log(response.data.user)
+    if (response.status === 200) { 
+      setIsLoggedIn(true);
+      setUser(response.data.user);
+    } else {
+      setIsLoggedIn(false);
+    }
+    
   } catch (err) {
     console.log("Error checking login status: " + err.message);
   }

@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import {UserProvider} from './Components/Context/UserContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <Router>
       <UserProvider>
         <ToastContainer
@@ -18,5 +17,4 @@ createRoot(document.getElementById('root')).render(
         <App />
       </UserProvider>
     </Router>
-  </StrictMode>,
 )

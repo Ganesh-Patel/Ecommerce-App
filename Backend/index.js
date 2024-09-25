@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import connectDB from './Config/connectToDatabase.js';
-import routes from './Routes/userProfileRoute.js';
+import UserRouter from './Routes/userProfileRoute.js';
+import ProductRouter from './Routes/ProductRouter.js';
 import dotenv from 'dotenv/config';
 import cookieParser from "cookie-parser";
 
@@ -20,7 +21,8 @@ app.use('/profile-picture', express.static("profilePics"));
 app.use(express.urlencoded({ extended: true }));
 connectDB();
 
-app.use('/api',routes);
+app.use('/api/user',UserRouter);
+app.use('/api/product',ProductRouter);
 
 const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

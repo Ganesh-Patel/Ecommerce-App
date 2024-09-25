@@ -8,6 +8,7 @@ import { UserContext } from '../../Components/Context/UserContext';
 function Header() { 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {user ,setIsLoggedIn} = useContext(UserContext);
+  console.log(user);
   const handleLogout = () => {
     logoutUser(setIsLoggedIn);
     toast('Logged out successfully');
