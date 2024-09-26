@@ -48,8 +48,6 @@ export const addProduct = async (req, res) => {
 }
 
 export const getAllProducts = async (req, res) => {
-    let query = {};
-    let sortArg = {};
     try {
         let query = {};
         let sortArg = {};
