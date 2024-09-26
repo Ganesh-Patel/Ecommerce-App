@@ -16,7 +16,7 @@ export const addProduct = async (req, res) => {
             inventory,
             addedBy
         } = req.body;
-
+        console.log('object', req.body)
         if (!name || !brand || !category || !price || !inventory || !addedBy) {
             return res.status(400).json({ message: "Please provide all required fields." });
         }
