@@ -10,7 +10,7 @@ const uploadPicsCloud = multer({ storage });
 const ProductRouter = express.Router();
 
 ProductRouter.post('/addproduct',addProduct)
-ProductRouter.get('/getallproduct',getAllProducts)
+ProductRouter.get('/getallproducts',getAllProducts)
 ProductRouter.get('/getsingleproduct/:id',getSingleProducts)
 ProductRouter.delete('/deletesingleproduct/:id',deleteSingleProduct)
 ProductRouter.patch('/editproduct/:id', updateProduct);

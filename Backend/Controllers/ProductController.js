@@ -1,8 +1,8 @@
-import {productModel } from "../Models/ProductModel.js"
+import { productModel } from "../Models/ProductModel.js"
 
 
-export const addProduct=async(req,res)=>{
-    
+export const addProduct = async (req, res) => {
+
     try {
         const {
             name,
@@ -25,7 +25,7 @@ export const addProduct=async(req,res)=>{
             brand,
             category,
             images: images || [],
-            rating: rating || 0,  
+            rating: rating || 0,
             price,
             description,
             inStock,
@@ -51,10 +51,84 @@ export const getAllProducts = async (req, res) => {
     let query = {};
     let sortArg = {};
     try {
-        const products = await productModel.find();
+        let query = {};
+        let sortArg = {};
+
+  // db.products.find({}).sort({category: -1})
+  // db.products.find({}).sort({category: 1})
+  // db.products.find({}).sort({price: 1})
+  // db.products.find({}).sort({price: -1})
+
+  // db.product.find({price: {$eq: 10000}})
+  // db.product.find({price: {$gt: 10000}})
+  // db.product.find({price: {$lt: 10000}})
+  // db.product.find({price: {$lte: 10000}})
+  // db.product.find({price: {$gte: 10000}})
+        if (req.query.brand) {
+            query.brand = req.query.brand;
+        }
+        if (req.query.category) {
+            query.category = req.query.category;
+        }
+        if (req.query.sortBy && req.query.sort) {
+            const sortField = req.query.sortBy;
+            const sortOrder = req.query.sort.toLowerCase() === "asc" ? 1 : -1;
+            sortArg[sortField] = sortOrder;
+
+        }
+        if (req.query.price) {
+            const priceOperators = {
+                "=": "$eq",
+                "<": "$lt",
+                ">": "$gt",
+                "<=": "$lte",
+                ">=": "$gte",
+            };
+            // [=, <, >, <=, >=]
+            Object.keys(priceOperators).forEach((operator) => {
+                if (req.query.price.startsWith(operator)) {
+                    query.price = {
+                        [priceOperators[operator]]: req.query.price.slice(operator.length),
+                    };
+                }
+            });
+        }
+        if (req.query.name) {
+            query.name = { $regex: req.query.name, $options: "i" };
+        }
+        //added by
+        if (req.query.minPrice && req.query.maxPrice) {
+            query.price = { 
+                $gte: req.query.minPrice, 
+                $lte: req.query.maxPrice 
+            };
+        } else if (req.query.minPrice) {
+            query.price = { $gte: req.query.minPrice };
+        } else if (req.query.maxPrice) {
+            query.price = { $lte: req.query.maxPrice };
+        }
+
+        if (req.query.rating) {
+            const ratingOperators = {
+                "=": "$eq",
+                "<": "$lt",
+                ">": "$gt",
+                "<=": "$lte",
+                ">=": "$gte",
+            };
+
+            Object.keys(ratingOperators).forEach((operator) => {
+                if (req.query.rating.startsWith(operator)) {
+                    query.rating = {
+                        [ratingOperators[operator]]: req.query.rating.slice(operator.length),
+                    };
+                }
+            });
+        }        
+        const allProducts = await productModel.find(query).sort(sortArg);
         return res.status(200).json({
             message: "Products retrieved successfully",
-            products: products
+            products: allProducts
         });
     } catch (error) {
         console.error("Error retrieving products:", error);
@@ -62,9 +136,9 @@ export const getAllProducts = async (req, res) => {
     }
 };
 
-export const getSingleProducts= async(req,res)=>{
+export const getSingleProducts = async (req, res) => {
     try {
-        const idToFind = req.params.id;   
+        const idToFind = req.params.id;
         const singleProduct = await productModel.findById(idToFind);
 
         if (!singleProduct) {
@@ -80,9 +154,9 @@ export const getSingleProducts= async(req,res)=>{
         return res.status(500).json({ message: 'Server error', error: error.message });
     }
 }
-export const deleteSingleProduct= async(req,res)=>{
+export const deleteSingleProduct = async (req, res) => {
     try {
-        const idToDelete = req.params.id;   
+        const idToDelete = req.params.id;
         const singleProduct = await productModel.findByIdAndDelete(idToDelete);
 
         if (!singleProduct) {
@@ -102,11 +176,11 @@ export const deleteSingleProduct= async(req,res)=>{
 export const updateProduct = async (req, res) => {
     try {
         const productId = req.params.id;
-        const updatedFields = req.body; 
+        const updatedFields = req.body;
         console.log(updatedFields);
         const updatedProduct = await productModel.findByIdAndUpdate(
             productId,
-            { $set: updatedFields }, 
+            { $set: updatedFields },
             { new: true, runValidators: true }
         );
 
