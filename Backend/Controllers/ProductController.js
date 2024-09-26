@@ -48,6 +48,8 @@ export const addProduct=async(req,res)=>{
 }
 
 export const getAllProducts = async (req, res) => {
+    let query = {};
+    let sortArg = {};
     try {
         const products = await productModel.find();
         return res.status(200).json({
