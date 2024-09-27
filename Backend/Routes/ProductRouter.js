@@ -9,10 +9,10 @@ const uploadPicsCloud = multer({ storage });
 
 const ProductRouter = express.Router();
 
-ProductRouter.post('/addproduct',addProduct)
+ProductRouter.post('/addproduct',authMiddleware,uploadPicsCloud.single('image'),addProduct)
 ProductRouter.get('/getallproducts',getAllProducts)
 ProductRouter.get('/getsingleproduct/:id',getSingleProducts)
 ProductRouter.delete('/deletesingleproduct/:id',deleteSingleProduct)
-ProductRouter.patch('/editproduct/:id', updateProduct);
+ProductRouter.patch('/editproduct/:id',uploadPicsCloud.single('image'), updateProduct);
 
 export default ProductRouter;

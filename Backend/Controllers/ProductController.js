@@ -1,5 +1,5 @@
 import { productModel } from "../Models/ProductModel.js"
-
+import uploadToCloudinary from '../Services/uploadToCloudinary.js'
 
 export const addProduct = async (req, res) => {
 
@@ -8,35 +8,45 @@ export const addProduct = async (req, res) => {
             name,
             brand,
             category,
-            images,
             rating,
             price,
             description,
-            inStock,
             inventory,
             addedBy
         } = req.body;
         console.log('object', req.body)
-        if (!name || !brand || !category || !price || !inventory || !addedBy) {
+
+        let productImage = 'default.jpg';
+        // Check if a file was uploaded
+        if (req.file) {
+          console.log('File received, starting Cloudinary upload');
+          try {
+            const uploadResult = await uploadToCloudinary(req.file.buffer);
+            productImage = uploadResult.secure_url;
+            console.log('profilepicurl', productImage)
+          } catch (uploadError) {
+            console.error('Error during Cloudinary upload:', uploadError);
+            return res.status(500).send('Error uploading image to Cloudinary');
+          }
+        }
+        if (!name || !brand || !category || !price || !inventory) {
             return res.status(400).json({ message: "Please provide all required fields." });
         }
         const newProduct = new productModel({
             name,
             brand,
             category,
-            images: images || [],
+            images: productImage,
             rating: rating || 0,
             price,
             description,
-            inStock,
+            inStock:true,
             inventory,
-            addedBy
+            addedBy:"Admin"
         });
-
         // Save the product to the database
         const savedProduct = await newProduct.save();
-
-        // Respond with the created product
+        console.log('product Added Sucessfully')
         return res.status(201).json({
             message: "Product added successfully",
             product: savedProduct
@@ -153,10 +163,10 @@ export const getSingleProducts = async (req, res) => {
     }
 }
 export const deleteSingleProduct = async (req, res) => {
+
     try {
         const idToDelete = req.params.id;
         const singleProduct = await productModel.findByIdAndDelete(idToDelete);
-
         if (!singleProduct) {
             return res.status(404).json({ message: "Product not found." });
         }
@@ -172,19 +182,38 @@ export const deleteSingleProduct = async (req, res) => {
 }
 
 export const updateProduct = async (req, res) => {
+    console.log('API called for updating product', req.params.id);
+    
     try {
         const productId = req.params.id;
-        const updatedFields = req.body;
+        let updatedFields = { ...req.body }; 
         console.log(updatedFields);
+        let productImage='default.jpg'
+        // Check if a file was uploaded
+        if (req.file) {
+            console.log('File received, starting Cloudinary upload');
+            
+            try {
+                const uploadResult = await uploadToCloudinary(req.file.buffer);
+                 productImage = uploadResult.secure_url;
+                console.log('Image URL from Cloudinary:', productImage);
+                updatedFields.images = [productImage]; 
+            } catch (uploadError) {
+                console.error('Error during Cloudinary upload:', uploadError);
+                return res.status(500).send('Error uploading image to Cloudinary');
+            }
+        }
+
         const updatedProduct = await productModel.findByIdAndUpdate(
             productId,
-            { $set: updatedFields },
+            { $set: updatedFields }, 
             { new: true, runValidators: true }
         );
-
+        
         if (!updatedProduct) {
             return res.status(404).json({ message: "Product not found" });
         }
+        
         return res.status(200).json({
             message: "Product updated successfully",
             product: updatedProduct
@@ -194,3 +223,4 @@ export const updateProduct = async (req, res) => {
         return res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
