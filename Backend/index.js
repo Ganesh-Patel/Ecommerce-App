@@ -26,3 +26,12 @@ app.use('/api/product',ProductRouter);
 
 const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  if (err.status) {
+      res.status(err.status).json({ message: err.message });
+  } else {
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
