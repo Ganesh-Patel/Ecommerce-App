@@ -3,6 +3,7 @@ import cors from 'cors';
 import connectDB from './Config/connectToDatabase.js';
 import UserRouter from './Routes/userProfileRoute.js';
 import ProductRouter from './Routes/ProductRouter.js';
+import ReviewRouter from './Routes/ReviewRouter.js'
 import dotenv from 'dotenv/config';
 import cookieParser from "cookie-parser";
 
@@ -23,6 +24,7 @@ connectDB();
 
 app.use('/api/user',UserRouter);
 app.use('/api/product',ProductRouter);
+app.use('/api/review',ReviewRouter)
 
 const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

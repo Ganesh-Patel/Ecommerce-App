@@ -11,8 +11,7 @@ export const addProduct = async (req, res) => {
             rating,
             price,
             description,
-            inventory,
-            addedBy
+            inventory
         } = req.body;
         console.log('object', req.body)
 
@@ -42,7 +41,7 @@ export const addProduct = async (req, res) => {
             description,
             inStock:true,
             inventory,
-            addedBy:"Admin"
+            addedBy: req.user._id,
         });
         // Save the product to the database
         const savedProduct = await newProduct.save();

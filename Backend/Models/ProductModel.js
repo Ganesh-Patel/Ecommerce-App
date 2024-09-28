@@ -43,9 +43,10 @@ const productSchema = new mongoose.Schema({
         type: Number, 
         required: true 
     },
-    addedBy: { 
-        type: String,
-        required: true 
+    addedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true,
     }
 });
 
