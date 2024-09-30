@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import { productModel } from "../Models/ProductModel.js"
+import { userModel } from "../Models/UserModel.js";
 import uploadToCloudinary from '../Services/uploadToCloudinary.js'
 
 export const addProduct = async (req, res) => {
@@ -147,7 +149,6 @@ export const getSingleProducts = async (req, res) => {
     try {
         const idToFind = req.params.id;
         const singleProduct = await productModel.findById(idToFind);
-
         if (!singleProduct) {
             return res.status(404).json({ message: "Product not found." });
         }
@@ -222,4 +223,35 @@ export const updateProduct = async (req, res) => {
         return res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
+export async function addToWishlist(req, res) {
+    const { productID } = req.params;
+      // Convert productID to ObjectId
+      const productObjectId = new mongoose.Types.ObjectId(productID);
+    const userID = req.user._id;
+    let updatedUser;
+    const user = req.user;
+    console.log(user)
+    const existingProduct = user.wishlist.find((id) => id.equals(productObjectId));
+    console.log(existingProduct)
+    if (!existingProduct) {
+      //push productID into wishlist
+      updatedUser = await userModel.findByIdAndUpdate(
+        userID,
+        { $push: { wishlist: productID } },
+        { new: true }
+      );
+      res.json({message:"Item Added Successfully to wishList",updatedUser});
+    } else {
+      updatedUser = await userModel.findByIdAndUpdate(
+        userID,
+        {
+          $pull: { wishlist: productID },
+        },
+        { new: true }
+      );
+      res.json({message:"Item Removed Successfully from wishList",updatedUser});
+    }
+   
+  }
 

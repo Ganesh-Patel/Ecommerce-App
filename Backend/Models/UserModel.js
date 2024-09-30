@@ -33,9 +33,15 @@ const userSchema = new mongoose.Schema(
     },
     isVerified: {
       type:Boolean,
-    }
-
+    },
+    wishlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "product",
+      },
+    ],
   },
+  
   { timestamps: true }
 );
 export const userModel = mongoose.model("user", userSchema);
