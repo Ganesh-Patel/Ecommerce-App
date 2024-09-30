@@ -1,5 +1,5 @@
 import express from 'express';
-import {registerUser,verifyUser,loginUser, logOutUser,verifyemail,sendOtp,isUserLoggedIn,fetchUsers,validateOtp,changePassword} from '../Controllers/userController.js';
+import {registerUser,verifyUser,loginUser, logOutUser,verifyemail,sendOtp,isUserLoggedIn,fetchUsers,deleteUser,validateOtp,changePassword} from '../Controllers/userController.js';
 import  authMiddleware  from '../Middleware/authMiddleware.js';
 import multer from 'multer';
 
@@ -21,8 +21,8 @@ UserRouter.post('/forgotpassword/sendotp',sendOtp);
 UserRouter.post('/forgotpassword/validateotp',validateOtp);
 UserRouter.post('/forgotpassword/changepassword',changePassword);
 UserRouter.post('/updateuser', uploadPicsCloud.single('profilePic'), registerUser);
-UserRouter.delete('/deleteuser',registerUser);
-UserRouter.get('/fetchusers',fetchUsers)
+UserRouter.delete('/deleteuser/:id',authMiddleware,deleteUser);
+UserRouter.get('/fetchusers',authMiddleware,fetchUsers)
 
 
 export default UserRouter;

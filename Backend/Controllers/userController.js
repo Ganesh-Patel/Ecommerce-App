@@ -222,3 +222,15 @@ export const fetchUsers = async (req, res) => {
     res.status(500).json({ error: err });
   }
 }
+
+export const deleteUser=async (req,res)=>
+{
+  console.log("you are deleting the user  ")
+  try {
+    const idTodelete=req.params.id;
+    const deletedUSer = await userModel.findByIdAndDelete(idTodelete);
+    res.status(200).json({ message: "user deleted successfully", deletedUSer });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+}
