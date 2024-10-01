@@ -9,7 +9,7 @@ const uploadPicsCloud = multer({ storage });
 
 const ReviewRouter = express.Router();
 
-ReviewRouter.post('/addreview',authMiddleware,addReview)
+ReviewRouter.post('/addreview',authMiddleware,uploadPicsCloud.single('reviewImages'),addReview)
 ReviewRouter.get('/getallreview/:id',getAllReview)
 ReviewRouter.get('/getsinglereview/:id',getSingleReview)
 ReviewRouter.delete('/deletesinglereview/:id',deleteSingleReview)

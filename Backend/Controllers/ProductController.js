@@ -163,14 +163,12 @@ export const getSingleProducts = async (req, res) => {
     }
 }
 export const deleteSingleProduct = async (req, res) => {
-
     try {
         const idToDelete = req.params.id;
         const singleProduct = await productModel.findByIdAndDelete(idToDelete);
         if (!singleProduct) {
             return res.status(404).json({ message: "Product not found." });
         }
-
         return res.status(200).json({
             message: "Product deleted successfully",
             product: singleProduct
@@ -255,3 +253,26 @@ export async function addToWishlist(req, res) {
    
   }
 
+
+// Get all products in wishlist for a specific user
+export async function getWishlistProducts(req, res) {
+    try {
+        const { userId } = req.params;  
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'Invalid User ID' });
+        }
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const wishlistProductIds = user.wishlist;
+        if (wishlistProductIds.length === 0) {
+            return res.json({ message: 'No products in wishlist', products: [] });
+        }
+        const products = await productModel.find({ _id: { $in: wishlistProductIds } });
+        res.json({ message: 'Wishlist products fetched successfully', products });
+    } catch (err) {
+        console.error('Error fetching wishlist products:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}

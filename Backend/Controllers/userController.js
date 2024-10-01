@@ -213,15 +213,27 @@ export function isUserLoggedIn(req, res)
 }
 
 export const fetchUsers = async (req, res) => {
-  console.log("you are fetching all the users ")
+  console.log("You are fetching all the users");
+
+  const searchTerm = req.query.search || ''; 
+
   try {
-    const allUsers = await userModel.find();
-    console.log(allUsers)
-    res.status(200).json({ message: "users fetched successfully", allUsers });
+ 
+    const allUsers = await userModel.find({
+      $or: [
+        { email: { $regex: searchTerm, $options: 'i' } }, 
+        { firstname: { $regex: searchTerm, $options: 'i' } }, 
+        { lastname: { $regex: searchTerm, $options: 'i' } }
+      ]
+    });
+
+    console.log(allUsers);
+    res.status(200).json({ message: "Users fetched successfully", allUsers });
   } catch (err) {
     res.status(500).json({ error: err });
   }
-}
+};
+
 
 export const deleteUser=async (req,res)=>
 {

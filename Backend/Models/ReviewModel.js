@@ -17,10 +17,10 @@ const reviewSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
-    // images: [{
-    //     type: String,
-    //     trim: true,
-    // }],
+    images: [{
+        type: String,
+        trim: true,
+    }],
     addedBy: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'user', 

@@ -1,7 +1,7 @@
 import express from 'express';
 import  authMiddleware  from '../Middleware/authMiddleware.js';
 import multer from 'multer';
-import {addProduct,getAllProducts,getSingleProducts,deleteSingleProduct,updateProduct,addToWishlist} from '../Controllers/ProductController.js'
+import {addProduct,getAllProducts,getSingleProducts,deleteSingleProduct,updateProduct,addToWishlist,getWishlistProducts} from '../Controllers/ProductController.js'
 // Multer setup to process files in memory only
 const storage = multer.memoryStorage(); 
 const uploadPicsCloud = multer({ storage });
@@ -14,5 +14,6 @@ ProductRouter.get('/getsingleproduct/:id',getSingleProducts)
 ProductRouter.delete('/deletesingleproduct/:id',deleteSingleProduct)
 ProductRouter.patch('/editproduct/:id',uploadPicsCloud.single('image'), updateProduct);
 ProductRouter.post("/addToWishlist/:productID", authMiddleware, addToWishlist);
+ProductRouter.get('/wishlist/:userId',authMiddleware,getWishlistProducts);
 
 export default ProductRouter;
