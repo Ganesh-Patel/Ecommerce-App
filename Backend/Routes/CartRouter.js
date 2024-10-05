@@ -5,7 +5,8 @@ import {
   addToCart,
   getCart,
   removeFromCart,
-  clearCart
+  clearCart,
+  updateQuantity
 } from '../Controllers/CartController.js';
 
 const storage = multer.memoryStorage();
@@ -16,5 +17,6 @@ CartRouter.post('/addproduct', authMiddleware, addToCart);
 CartRouter.get('/getcart', authMiddleware, getCart);
 CartRouter.post('/removeproduct', authMiddleware, removeFromCart);
 CartRouter.post('/clearcart', authMiddleware, clearCart);
+CartRouter.put('/update-quantity', authMiddleware, updateQuantity);
 
 export default CartRouter;
