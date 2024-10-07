@@ -10,6 +10,6 @@ export function generateToken(user) {
        isVerified: user.isVerified
     },
     process.env.SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "7d" }
   );
 }

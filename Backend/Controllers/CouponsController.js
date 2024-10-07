@@ -82,3 +82,58 @@ export const deleteCoupon = async (req, res) => {
     return res.status(500).json({ message: "Error deleting coupon" });
   }
 };
+
+export const validateCoupon = async (req, res) => {
+    try {
+        const { code, totalAmount, productId, category } = req.body;
+
+        // Find the coupon in the database
+        const coupon = await couponModel.findOne({ code: code.toUpperCase() });
+
+        // Check if coupon exists
+        if (!coupon) {
+            return res.status(404).json({ message: 'Coupon not found' });
+        }
+
+        // Check if the coupon is active
+        if (!coupon.isActive) {
+            return res.status(400).json({ message: 'Coupon is not active' });
+        }
+
+        // Check if the coupon has expired
+        if (new Date() > coupon.expiryDate) {
+            return res.status(400).json({ message: 'Coupon has expired' });
+        }
+
+        // Check if the total amount meets the minimum purchase requirement
+        if (totalAmount < coupon.minimumPurchaseAmount) {
+            return res.status(400).json({ message: `Minimum purchase amount of ${coupon.minimumPurchaseAmount} is required` });
+        }
+
+        // Check if the usage limit has been exceeded
+        if (coupon.usageLimit !== null && coupon.usedCount >= coupon.usageLimit) {
+            return res.status(400).json({ message: 'Coupon usage limit has been reached' });
+        }
+
+        // Check if the product is applicable
+        if (coupon.applicableProducts.length > 0 && !coupon.applicableProducts.includes(productId)) {
+            return res.status(400).json({ message: 'Coupon is not applicable for this product' });
+        }
+
+        // Check if the category is applicable
+        if (coupon.applicableCategories.length > 0 && !coupon.applicableCategories.includes(category)) {
+            return res.status(400).json({ message: 'Coupon is not applicable for this category' });
+        }
+
+        // If all checks pass, return the discount
+        return res.status(200).json({
+            message: 'Coupon is valid',
+            discount: coupon.discount,
+            isPercentage: coupon.isPercentage,
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
