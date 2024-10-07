@@ -85,10 +85,11 @@ export const deleteCoupon = async (req, res) => {
 
 export const validateCoupon = async (req, res) => {
     try {
-        const { code, totalAmount, productId, category } = req.body;
+        const {couponCode, totalPrice } = req.body;
+        console.log(couponCode)
 
         // Find the coupon in the database
-        const coupon = await couponModel.findOne({ code: code.toUpperCase() });
+        const coupon = await Coupon.findOne({ code: couponCode.toUpperCase() });
 
         // Check if coupon exists
         if (!coupon) {
@@ -106,7 +107,7 @@ export const validateCoupon = async (req, res) => {
         }
 
         // Check if the total amount meets the minimum purchase requirement
-        if (totalAmount < coupon.minimumPurchaseAmount) {
+        if (totalPrice < coupon.minimumPurchaseAmount) {
             return res.status(400).json({ message: `Minimum purchase amount of ${coupon.minimumPurchaseAmount} is required` });
         }
 
@@ -114,20 +115,10 @@ export const validateCoupon = async (req, res) => {
         if (coupon.usageLimit !== null && coupon.usedCount >= coupon.usageLimit) {
             return res.status(400).json({ message: 'Coupon usage limit has been reached' });
         }
-
-        // Check if the product is applicable
-        if (coupon.applicableProducts.length > 0 && !coupon.applicableProducts.includes(productId)) {
-            return res.status(400).json({ message: 'Coupon is not applicable for this product' });
-        }
-
-        // Check if the category is applicable
-        if (coupon.applicableCategories.length > 0 && !coupon.applicableCategories.includes(category)) {
-            return res.status(400).json({ message: 'Coupon is not applicable for this category' });
-        }
-
         // If all checks pass, return the discount
         return res.status(200).json({
             message: 'Coupon is valid',
+            isValid: true,
             discount: coupon.discount,
             isPercentage: coupon.isPercentage,
         });
