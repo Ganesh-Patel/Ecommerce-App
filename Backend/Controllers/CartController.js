@@ -57,6 +57,7 @@ export const getCart = async (req, res) => {
   try {
     const userId = req.user._id; 
     const cart = await Cart.findOne({ user: userId }).populate('products.product'); 
+    console.log(cart)
 
     if (!cart) {
       return res.status(404).json({ message: 'Cart not found' });
@@ -101,9 +102,15 @@ export const updateQuantity = async (req, res) => {
       cart.products[productIndex].count = newQuantity;
     }
     // Save the updated cart
+    console.log('cart')
+    console.log(cart)
     await cart.save();
+    const updatedCart=await Cart.findOne({ user: userId }).populate('products.product');
 
-    return res.status(200).json({ message: 'Quantity updated successfully', cart });
+    console.log('updated card')
+    console.log(updatedCart)
+
+    return res.status(200).json({ message: 'Quantity updated successfully', updatedCart });
   } catch (error) {
     console.error('Error updating quantity:', error);
     return res.status(500).json({ message: 'An error occurred while updating the quantity' });
