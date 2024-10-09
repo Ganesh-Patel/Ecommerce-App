@@ -44,8 +44,9 @@ export const addToCart = async (req, res) => {
 
     // Save the updated cart
     await cart.save();
+    const updatedCart=await Cart.findOne({ user: userId }).populate('products.product');
 
-    return res.status(200).json({ message: 'Product added to cart', cart });
+    return res.status(200).json({ message: 'Product added to cart', updatedCart });
   } catch (error) {
     console.error('Error adding product to cart:', error);
     return res.status(500).json({ message: 'An error occurred while adding to the cart' });
@@ -60,7 +61,7 @@ export const getCart = async (req, res) => {
     console.log(cart)
 
     if (!cart) {
-      return res.status(404).json({ message: 'Cart not found' });
+      return res.status(404).json({ message: 'Cart not found' ,cart});
     }
     return res.status(200).json({ cart });
   } catch (error) {
@@ -102,13 +103,8 @@ export const updateQuantity = async (req, res) => {
       cart.products[productIndex].count = newQuantity;
     }
     // Save the updated cart
-    console.log('cart')
-    console.log(cart)
     await cart.save();
     const updatedCart=await Cart.findOne({ user: userId }).populate('products.product');
-
-    console.log('updated card')
-    console.log(updatedCart)
 
     return res.status(200).json({ message: 'Quantity updated successfully', updatedCart });
   } catch (error) {
@@ -148,7 +144,7 @@ export const removeFromCart = async (req, res) => {
     await cart.save();
     const updatedCart = await Cart.findOne({ user: userId }).populate('products.product');
 
-    return res.status(200).json({ message: 'Product removed from cart', cart });
+    return res.status(200).json({ message: 'Product removed from cart', updatedCart });
   } catch (error) {
     console.error('Error removing product from cart:', error);
     return res.status(500).json({ message: 'An error occurred while removing the product from the cart' });
@@ -166,7 +162,8 @@ export const clearCart = async (req, res) => {
     cart.products = [];
     cart.calculateCartTotal();
     await cart.save();
-    return res.status(200).json({ message: 'Cart cleared', cart });
+    const updatedCart = await Cart.findOne({ user: userId }).populate('products.product');
+    return res.status(200).json({ message: 'Cart cleared', updatedCart });
   } catch (error) {
     console.error('Error clearing cart:', error);
     return res.status(500).json({ message: 'An error occurred while clearing the cart' });

@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import CartRouter from './Routes/CartRouter.js';
 import CouponRouter from './Routes/CouponsRouter.js';
 import addressRoutes from './Routes/addressRoutes.js'
+import orderRouter from './Routes/orderRoutes.js';
 
 const corsOptions = {
     origin: 'http://localhost:5173',  // Your frontend origin
@@ -31,6 +32,7 @@ app.use('/api/review',ReviewRouter)
 app.use('/api/cart',CartRouter)
 app.use('/api/addresses', addressRoutes);
 app.use('/api/coupons',CouponRouter)
+app.use('/api/orders',orderRouter)
 
 const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
