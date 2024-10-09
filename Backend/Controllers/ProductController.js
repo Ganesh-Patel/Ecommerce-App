@@ -58,83 +58,138 @@ export const addProduct = async (req, res) => {
     }
 }
 
+// export const getAllProducts = async (req, res) => {
+//     try {
+//         let query = {};
+//         let sortArg = {};
+
+//   // db.products.find({}).sort({category: -1})
+//   // db.products.find({}).sort({category: 1})
+//   // db.products.find({}).sort({price: 1})
+//   // db.products.find({}).sort({price: -1})
+
+//   // db.product.find({price: {$eq: 10000}})
+//   // db.product.find({price: {$gt: 10000}})
+//   // db.product.find({price: {$lt: 10000}})
+//   // db.product.find({price: {$lte: 10000}})
+//   // db.product.find({price: {$gte: 10000}})
+//         if (req.query.brand) {
+//             query.brand = req.query.brand;
+//         }
+//         if (req.query.category) {
+//             query.category = req.query.category;
+//         }
+//         if (req.query.sortBy && req.query.sort) {
+//             const sortField = req.query.sortBy;
+//             const sortOrder = req.query.sort.toLowerCase() === "asc" ? 1 : -1;
+//             sortArg[sortField] = sortOrder;
+
+//         }
+//         if (req.query.price) {
+//             const priceOperators = {
+//                 "=": "$eq",
+//                 "<": "$lt",
+//                 ">": "$gt",
+//                 "<=": "$lte",
+//                 ">=": "$gte",
+//             };
+//             // [=, <, >, <=, >=]
+//             Object.keys(priceOperators).forEach((operator) => {
+//                 if (req.query.price.startsWith(operator)) {
+//                     query.price = {
+//                         [priceOperators[operator]]: req.query.price.slice(operator.length),
+//                     };
+//                 }
+//             });
+//         }
+//         if (req.query.name) {
+//             query.name = { $regex: req.query.name, $options: "i" };
+//         }
+//         //added by
+//         if (req.query.minPrice && req.query.maxPrice) {
+//             query.price = { 
+//                 $gte: req.query.minPrice, 
+//                 $lte: req.query.maxPrice 
+//             };
+//         } else if (req.query.minPrice) {
+//             query.price = { $gte: req.query.minPrice };
+//         } else if (req.query.maxPrice) {
+//             query.price = { $lte: req.query.maxPrice };
+//         }
+
+//         if (req.query.rating) {
+//             const ratingOperators = {
+//                 "=": "$eq",
+//                 "<": "$lt",
+//                 ">": "$gt",
+//                 "<=": "$lte",
+//                 ">=": "$gte",
+//             };
+
+//             Object.keys(ratingOperators).forEach((operator) => {
+//                 if (req.query.rating.startsWith(operator)) {
+//                     query.rating = {
+//                         [ratingOperators[operator]]: req.query.rating.slice(operator.length),
+//                     };
+//                 }
+//             });
+//         }        
+//         const allProducts = await productModel.find(query).sort(sortArg);
+//         return res.status(200).json({
+//             message: "Products retrieved successfully",
+//             products: allProducts
+//         });
+//     } catch (error) {
+//         console.error("Error retrieving products:", error);
+//         return res.status(500).json({ message: 'Server error', error: error.message });
+//     }
+// };
+
+
 export const getAllProducts = async (req, res) => {
     try {
         let query = {};
         let sortArg = {};
+        console.log(req.query);
+        if (req.query.brand && req.query.brand.length > 0) {
+            query.brand = { $in: req.query.brand };
+        }
+        if (req.query.category && req.query.category.length > 0) {
+            query.category = { $in: req.query.category };
+        }
 
-  // db.products.find({}).sort({category: -1})
-  // db.products.find({}).sort({category: 1})
-  // db.products.find({}).sort({price: 1})
-  // db.products.find({}).sort({price: -1})
+        // if (req.query.sortBy && req.query.sort) {
+        //     const sortField = req.query.sortBy;
+        //     const sortOrder = req.query.sort.toLowerCase() === "asc" ? 1 : -1;
+        //     sortArg[sortField] = sortOrder;
+        // }
 
-  // db.product.find({price: {$eq: 10000}})
-  // db.product.find({price: {$gt: 10000}})
-  // db.product.find({price: {$lt: 10000}})
-  // db.product.find({price: {$lte: 10000}})
-  // db.product.find({price: {$gte: 10000}})
-        if (req.query.brand) {
-            query.brand = req.query.brand;
-        }
-        if (req.query.category) {
-            query.category = req.query.category;
-        }
-        if (req.query.sortBy && req.query.sort) {
-            const sortField = req.query.sortBy;
-            const sortOrder = req.query.sort.toLowerCase() === "asc" ? 1 : -1;
-            sortArg[sortField] = sortOrder;
-
-        }
-        if (req.query.price) {
-            const priceOperators = {
-                "=": "$eq",
-                "<": "$lt",
-                ">": "$gt",
-                "<=": "$lte",
-                ">=": "$gte",
-            };
-            // [=, <, >, <=, >=]
-            Object.keys(priceOperators).forEach((operator) => {
-                if (req.query.price.startsWith(operator)) {
-                    query.price = {
-                        [priceOperators[operator]]: req.query.price.slice(operator.length),
-                    };
-                }
-            });
-        }
-        if (req.query.name) {
-            query.name = { $regex: req.query.name, $options: "i" };
-        }
+        // if (req.query.name) {
+        //     query.name = { $regex: req.query.name, $options: "i" };
+        // }
         //added by
-        if (req.query.minPrice && req.query.maxPrice) {
-            query.price = { 
-                $gte: req.query.minPrice, 
-                $lte: req.query.maxPrice 
-            };
-        } else if (req.query.minPrice) {
-            query.price = { $gte: req.query.minPrice };
-        } else if (req.query.maxPrice) {
-            query.price = { $lte: req.query.maxPrice };
+        if (req.query.price) {
+            if (req.query.price.min && req.query.price.max) {
+                query.price = {
+                    $gte: req.query.price.min,
+                    $lte: req.query.price.max
+                };
+            } else if (req.query.price.min) {
+                query.price = { $gte: req.query.price.min };
+            } else if (req.query.price.max) {
+                query.price = { $lte: req.query.price.max };
+            }
         }
 
         if (req.query.rating) {
-            const ratingOperators = {
-                "=": "$eq",
-                "<": "$lt",
-                ">": "$gt",
-                "<=": "$lte",
-                ">=": "$gte",
-            };
+            query.rating = { $gte: req.query.rating };
+        }
+        if(req.query.search){
+            query.name = { $regex: req.query.search, $options: "i" };
+        }
 
-            Object.keys(ratingOperators).forEach((operator) => {
-                if (req.query.rating.startsWith(operator)) {
-                    query.rating = {
-                        [ratingOperators[operator]]: req.query.rating.slice(operator.length),
-                    };
-                }
-            });
-        }        
-        const allProducts = await productModel.find(query).sort(sortArg);
+        const allProducts = await productModel.find(query);
+        console.log(allProducts);
         return res.status(200).json({
             message: "Products retrieved successfully",
             products: allProducts
@@ -144,7 +199,6 @@ export const getAllProducts = async (req, res) => {
         return res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
-
 export const getSingleProducts = async (req, res) => {
     try {
         const idToFind = req.params.id;
