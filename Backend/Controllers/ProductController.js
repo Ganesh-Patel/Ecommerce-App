@@ -189,7 +189,7 @@ export const getAllProducts = async (req, res) => {
         }
 
         const allProducts = await productModel.find(query);
-        console.log(allProducts);
+        // console.log(allProducts);
         return res.status(200).json({
             message: "Products retrieved successfully",
             products: allProducts
