@@ -38,7 +38,8 @@ export const registerUser = async (req, res) => {
         isVerified: false,
       });
     const jwtToken = generateToken(user);
-    const verificationLink = `${process.env.FRONTEND_URL}/verifyemail?token=${jwtToken}`;
+    // const verificationLink = `${process.env.FRONTEND_URL}/verifyemail?token=${jwtToken}`;https://apni-shop-eight.vercel.app
+      const verificationLink = `https://apni-shop-eight.vercel.app/verifyemail?token=${jwtToken}`;
     await sendEmail(email, firstname, lastname,null,verificationLink);
     await user.save();
     console.log('User registered successfully');
