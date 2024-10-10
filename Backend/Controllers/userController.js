@@ -90,8 +90,8 @@ export const loginUser = async (req, res) => {
     res
       .cookie("auth_token", jwtToken, {
         httpOnly: true,
-        secure: false, //as we are working with localhost, which runs on http, not on https
-       sameSite: "none",
+        secure: true, //as we are working with localhost, which runs on http, not on https
+        sameSite: "none",
         maxAge: 3600000,
       })
       .status(200)

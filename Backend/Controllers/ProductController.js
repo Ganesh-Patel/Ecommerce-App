@@ -285,7 +285,6 @@ export async function addToWishlist(req, res) {
     const user = req.user;
     console.log(user)
     const existingProduct = user.wishlist.find((id) => id.equals(productObjectId));
-    console.log(existingProduct)
     if (!existingProduct) {
       //push productID into wishlist
       updatedUser = await userModel.findByIdAndUpdate(
