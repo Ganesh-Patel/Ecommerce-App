@@ -14,7 +14,7 @@ import orderRouter from './Routes/orderRoutes.js';
 const allowedOrigins = [
   'http://localhost:5173', 
   'https://apni-shop-eight.vercel.app' ,
-  'https://ecommerce-app-psi-seven.vercel.app/'
+  'https://ecommerce-app-psi-seven.vercel.app'
 ];
 
 const corsOptions = {
