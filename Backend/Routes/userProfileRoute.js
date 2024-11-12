@@ -23,6 +23,4 @@ UserRouter.post('/forgotpassword/changepassword',changePassword);
 UserRouter.post('/updateuser', uploadPicsCloud.single('profilePic'), registerUser);
 UserRouter.delete('/deleteuser/:id',authMiddleware,deleteUser);
 UserRouter.get('/fetchusers',authMiddleware,fetchUsers)
-
-
 export default UserRouter;
