@@ -173,7 +173,8 @@ This document contains all API endpoints used in the application.
 ## Screenshots  
 
 ### 1. Home Page  
-![Home Page](https://github.com/user-attachments/assets/f4195a86-0e2c-496a-9358-3807bf26b35) 
+![Home Page](https://github.com/user-attachments/assets/d9dea40d-8cb3-4d8e-95da-1ceb2fdb8230) 
+
 
 
 *Explore products with a user-friendly interface.*  
