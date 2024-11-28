@@ -47,6 +47,31 @@ To create an intuitive and efficient e-commerce solution that simplifies online 
 - **Multer**: Middleware for file uploads.  
 - **JSON Web Tokens (JWT)**: Secure user authentication.  
 
+## Environment Variables
+
+Below are the required environment variables for configuring and running the application:
+
+### Cloudinary Configuration
+These variables are used for managing image uploads and storage using Cloudinary:
+- `CLOUDINARY_API_KEY` - API key for Cloudinary authentication.
+- `CLOUDINARY_API_SECRET` - API secret for Cloudinary authentication.
+- `CLOUDINARY_CLOUD_NAME` - Your Cloudinary account's cloud name.
+- `CLOUDINARY_URL` - Complete Cloudinary URL (optional if the above three are set separately).
+
+### Database Configuration
+- `DB` - Database name.
+- `MONGO_URI` - MongoDB connection string.
+
+### Server Configuration
+- `PORT` - Port number where the server will run (default: `3000`).
+- `SECRET` - Secret key for JWT token generation.
+
+### Email Configuration
+These variables are required for email services:
+- `EMAIL_USER` - Email address used for sending emails (e.g., for password resets).
+- `EMAIL_PASS` - App password or SMTP password for the email account.
+
+
 ### Payment Integration  
 - **Razorpay**: Fast and secure payment gateway integration.  
 
@@ -148,20 +173,14 @@ This document contains all API endpoints used in the application.
 ## Screenshots  
 
 ### 1. Home Page  
-![Home Page](https://via.placeholder.com/800x400)  
+![Home Page](https://github.com/user-attachments/assets/f4195a86-0e2c-496a-9358-3807bf26b35) 
+
+
 *Explore products with a user-friendly interface.*  
 
-### 2. Shopping Cart  
-![Shopping Cart](https://via.placeholder.com/800x400)  
-*Manage your selected products easily.*  
-
-### 3. Wishlist  
-![Wishlist](https://via.placeholder.com/800x400)  
-*Save your favorite products for later.*  
-
-### 4. Payment Gateway  
-![Payment Gateway](https://via.placeholder.com/800x400)  
-*Secure and seamless payment processing.*  
+### 2. Products   
+![Products](https://github.com/user-attachments/assets/f864221b-1fa6-403b-bd0a-11fe41a22a60)  
+*Manage your selected products easily.*   
 
 ---
 
