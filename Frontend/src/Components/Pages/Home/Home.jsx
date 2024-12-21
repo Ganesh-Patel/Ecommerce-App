@@ -6,6 +6,12 @@ import { Puff } from 'react-loader-spinner';
 import { UserContext } from '../../../Contexts/UserContext.jsx';
 
 const images = [
+  // 'https://t4.ftcdn.net/jpg/03/06/69/49/360_F_306694930_S3Z8H9Qk1MN79ZUe7bEWqTFuonRZdemw.jpg',
+  // 'https://img.freepik.com/premium-vector/online-shopping-with-mobile-store-design-discount-promotion-banner_62391-413.jpg',
+  // 'https://static.vecteezy.com/system/resources/previews/001/925/528/non_2x/black-friday-sale-banner-or-promotion-on-dark-background-online-shopping-store-with-mobile-credit-cards-and-shop-elements-illustration-vector.jpg',
+  // 'https://media.istockphoto.com/id/1198469235/vector/shopping-and-delivery-promotional-sale-banner-with-shopping-cart.jpg?s=612x612&w=0&k=20&c=jLu5g2OTHqyn87zsjwsoS4M1kUc9Woa3DmirqpOdcYQ=',
+  // 'https://www.shutterstock.com/image-vector/fashion-sale-banner-woman-outfit-260nw-1240134448.jpg',
+  // '',
   'https://images-eu.ssl-images-amazon.com/images/G/31/prime/Aug24/DEALS-REVEALED_hero_PC_pse_2_2x._CB568322891_.jpg',
   'https://images-eu.ssl-images-amazon.com/images/G/31/OHL/23/Central/BAU/ledaup/AA/PC_Hero_3000x1200_2x._CB568322637_.jpg',
   'https://m.media-amazon.com/images/I/61qVFfNuZzL._SX3000_.jpg',
@@ -57,6 +63,7 @@ function Home() {
       {loading ? (
         <div className="flex justify-center items-center">
           <Puff />{/* You can add a loading spinner here */}
+          <h1>Render is taking time to Load Please Wait ......</h1>
         </div>
       ) : (
         <div className="flex flex-wrap justify-center gap-4">
