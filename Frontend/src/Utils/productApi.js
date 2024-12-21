@@ -105,7 +105,7 @@ export const getFromWishlist = async (userId) => {
 export const addRatings = async (reviewData) => {
     console.log('id for which we are adding to review  the details ')
     try {
-        const response = await axios.post(`http://localhost:3008/api/review/addreview`,reviewData, {
+        const response = await axios.post(`https://ecommerce-app-oqjy.onrender.com/api/review/addreview`,reviewData, {
          withCredentials: true,
         });
         console.log(response);
