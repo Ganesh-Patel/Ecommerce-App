@@ -6,7 +6,7 @@ function Navbar() {
   const { user, isLoggedIn } = useContext(UserContext);
 
   return (
-    <nav className="hidden md:flex space-x-6">
+    <nav className="hidden md:flex space-x-6 font-extrabold">
       <Link to="/" className="text-gray-800 hover:text-teal-500">Home</Link>
       <Link to="/shop" className="text-gray-800 hover:text-teal-500">Shop</Link>
       <Link to="/about" className="text-gray-800 hover:text-teal-500">About Us</Link>

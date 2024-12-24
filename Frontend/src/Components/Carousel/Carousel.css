@@ -28,21 +28,26 @@
   .carousel-item img {
     width: 100%;
     height: auto;
+    max-height: 50vh; /* Ensures image doesn't take more than 50% of the screen height */
+    object-fit: cover; /* Ensures image looks good within its bounds */
     display: block;
+    margin: auto;
+    border-radius: 8px; /* Optional: Adds rounded corners for a modern look */
   }
   
   .carousel-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.5);
     border: none;
-    box-shadow: white;
-    color: rgb(19, 18, 18);
-    font-size: 4rem;
-    /* padding: 10px; */
+    color: white;
+    font-size: 2rem;
+    padding: 10px 20px;
     cursor: pointer;
     z-index: 1;
+    border-radius: 50%;
+    outline: none;
   }
   
   .carousel-button.prev {
@@ -57,9 +62,27 @@
   @media screen and (max-width: 700px) {
 
     .carousel-button {
-      font-size: 2rem;
+      font-size: 0.5rem;
+      padding: 5px 10px;
      
+    }
+    .carousel-item img {
+      width: 100%;
+      height: 30vh;
+      max-height: 30vh;
+      object-fit: cover; 
+      display: block;
+      margin: auto;
+      border-radius: 8px; 
     }
     
   }
-  
+  /* Hide scrollbar for better appearance on small screens */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}

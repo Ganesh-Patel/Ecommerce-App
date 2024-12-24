@@ -43,7 +43,7 @@ const Shop = () => {
 
 
   return (
-    <div className="mt-12">
+    <div className="mt-16">
       <ShopNav />
 
       {/* Main Content with Filter and Product List */}
