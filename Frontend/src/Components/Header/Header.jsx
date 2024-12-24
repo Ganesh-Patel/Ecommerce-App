@@ -4,7 +4,7 @@ import { FaHeart, FaShoppingCart, FaUser, FaBars, FaTimes } from 'react-icons/fa
 import Navbar from './Navbar/Navbar';
 import { UserContext } from '../../Contexts/UserContext';
 import { logoutUser } from '../../Utils/api.js';
-import logo1 from '../../../public/logo2.png';
+import logo1 from '../../../public/logo4.png';
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
