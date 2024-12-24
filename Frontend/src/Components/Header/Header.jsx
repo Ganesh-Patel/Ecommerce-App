@@ -4,6 +4,7 @@ import { FaHeart, FaShoppingCart, FaUser, FaBars, FaTimes } from 'react-icons/fa
 import Navbar from './Navbar/Navbar';
 import { UserContext } from '../../Contexts/UserContext';
 import { logoutUser } from '../../Utils/api.js';
+import logo1 from '../../../public/logo2.png';
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -49,10 +50,14 @@ function Header() {
 
   return (
     <header className={`fixed w-full top-0 left-0 transition duration-300 z-50 ${isScrolled ? 'shadow-lg border-b border-gray-400 bg-gray-200' : 'bg-transparent'}`}>
-      <div className="container mx-auto flex justify-between items-center p-4">
-        <h1 className="text-2xl font-bold text-gray-800">
+      <div className="container mx-auto flex justify-between items-center p-0">
+        <h1 className="text-2xl mb-2 font-bold text-gray-800">
           <Link to="/" className="hover:text-teal-500">
-            Apni-Shop
+          <img
+            src={logo1}
+            className="h-16 w-36"
+            alt="Location"
+          />
           </Link>
         </h1>
 

@@ -58,7 +58,7 @@ function Home() {
     <div className="min-h-screen flex flex-col mt-16 -z-0">
       <ShopNav />
       {/* Carousel Section */}
-      <div className="w-full mt-2"> {/* Full width container for the carousel */}
+      <div className="w-full mt-0"> {/* Full width container for the carousel */}
         <CarouselHome images={images} className="w-full h-[70vh]" />
       </div>
       <div className="container mx-auto py-2 px-4 mt-4">

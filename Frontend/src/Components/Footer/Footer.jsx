@@ -1,14 +1,24 @@
 import React from 'react';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import logo2 from '../../../public/logo2.png';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className="bg-teal-700 text-white py-10">
+    <footer className="bg-teal-600 text-white py-10">
       <div className="container mx-auto px-6 md:px-12 lg:px-24">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1">
-            <h1 className="text-2xl font-bold mb-4">Apni-Shop</h1>
+             <h1 className="text-2xl font-bold text-gray-800">
+                      <Link to="/" className="hover:text-teal-500">
+                      <img
+                        src={logo2}
+                        className="h-24 w-36"
+                        alt="Location"
+                      />
+                      </Link>
+                    </h1>
             <p className="text-gray-200">
               Your one-stop shop for the best products at unbeatable prices.
               Shop from a wide range of categories and enjoy seamless service.
