@@ -5,6 +5,8 @@ import { getAllProducts } from '../../../Utils/productApi.js';
 import { Puff } from 'react-loader-spinner';
 import { UserContext } from '../../../Contexts/UserContext.jsx';
 import ShopNav from '../../Header/ShopNavbar/ShopNav.jsx';
+import banner from '../../../../public/banners/apnishopbanner.png'
+import banner1 from '../../../../public/banners/banner11.png'
 
 const images = [
   // 'https://t4.ftcdn.net/jpg/03/06/69/49/360_F_306694930_S3Z8H9Qk1MN79ZUe7bEWqTFuonRZdemw.jpg',
@@ -13,6 +15,8 @@ const images = [
   // 'https://media.istockphoto.com/id/1198469235/vector/shopping-and-delivery-promotional-sale-banner-with-shopping-cart.jpg?s=612x612&w=0&k=20&c=jLu5g2OTHqyn87zsjwsoS4M1kUc9Woa3DmirqpOdcYQ=',
   // 'https://www.shutterstock.com/image-vector/fashion-sale-banner-woman-outfit-260nw-1240134448.jpg',
   // '',
+  banner1,
+  banner,
   'https://i.pinimg.com/originals/f1/87/c5/f187c529afece931da168cc3735e2883.jpg',
   'https://png.pngtree.com/thumb_back/fh260/background/20201010/pngtree-black-friday-sale-background-design-template-banner-discount-vector-poster-business-image_407567.jpg',
   'https://i.pinimg.com/736x/b6/89/96/b68996b0aeb13339740f961ada455a77.jpg',
